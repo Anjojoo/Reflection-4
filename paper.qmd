@@ -1,0 +1,64 @@
+---
+title: "Week 5 Reflection"
+author: 
+  - Yunkai Gu, Anqi Xu, Yitong Wang
+thanks: "Code and data are available at: [https://github.com/RohanAlexander/starter_folder](https://github.com/RohanAlexander/starter_folder)."
+date: 3 October 2024
+date-format: long
+format: pdf
+number-sections: true
+---
+
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(dplyr)
+```
+
+
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+
+data <- read.csv("usa_00001.csv")
+
+doctoral_data <- data %>% 
+  filter(EDUCD == 116) %>% 
+  group_by(STATEICP) %>%
+  summarize(doctoral_count = n())
+```
+
+
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+
+
+# Extract the number of doctoral degree holders in California
+california_doctoral <- doctoral_data %>% 
+  filter(STATEICP == 71) %>% 
+  pull(doctoral_count)
+
+california_total_respondents <- 391171
+
+# Calculate the ratio of doctoral degrees to total respondents in California
+california_ratio <- california_doctoral / california_total_respondents
+
+# Apply the ratio to estimate total number of respondents in each state
+doctoral_data <- doctoral_data %>%
+  mutate(estimated_total_respondents = doctoral_count / california_ratio)
+```
+
+
+
+
+# Introduction
+
+
+
+
